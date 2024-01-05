@@ -22,6 +22,9 @@ const ScanQR = () => {
   const baseUrl = process.env.REACT_APP_BASE_API_URL;
 
   const handleScan = async (data) => {
+    const userString = localStorage.getItem('user');
+    const userObject = userString ? JSON.parse(userString) : null;
+
     if (data && !isAttendanceChecked) {
       console.log(data);
       try {
@@ -32,26 +35,12 @@ const ScanQR = () => {
         if (expectedQRDataArray.includes(data.text)) {
           const res = await axios.post(
             baseUrl + '/api/employee/check-attendance',
-            { employeeID: userID },
+            { employeeID: userID, employeeName: userObject.name },
             { withCredentials: true }
           );
 
           if (res.data.success) {
             alert("Attendance checked successfully!");
-            if (res?.data?.message?.position === 'Autofahrer') {
-              setPosition('Autofahrer');
-              setAttendanceID(res?.data?.message?._id);
-            } 
-            if (res?.data?.message?.shift_info?.time_slot?.check_out) {
-              setIsCheckout(res?.data?.message?.shift_info?.time_slot?.check_out);
-              if (res?.data?.message?.position === 'Lito') {
-                setPosition('Lito');
-                setAttendanceID(res?.data?.message?._id);
-              } else if (res?.data?.message?.position === 'Service') {
-                setPosition('Service');
-                setAttendanceID(res?.data?.message?._id);
-              }
-            }
           } else {
             alert("Expired QR code. Please generate a new QR code.");
           }
