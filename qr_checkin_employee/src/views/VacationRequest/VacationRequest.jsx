@@ -19,6 +19,9 @@ const VacationRequest = () => {
         user: {id: userID}
     } = useContext(AuthContext);
 
+    const userString = localStorage.getItem('user');
+    const userObject = userString ? JSON.parse(userString) : null;
+
     const baseUrl = process.env.REACT_APP_BASE_API_URL;
 
     const handleFormSubmit = async (event) => {
@@ -27,7 +30,7 @@ const VacationRequest = () => {
 
         try {
             const response = await axios.post(
-                baseUrl + `/api/employee/create-request?employeeID=${userID}`,
+                baseUrl + `/api/employee/create-request?employeeID=${userID}&employeeName=${userObject.name}`,
                 formData,
             );
             alert("Successfully sent the request!");

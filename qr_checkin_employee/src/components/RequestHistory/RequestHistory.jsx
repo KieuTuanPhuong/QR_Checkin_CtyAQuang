@@ -14,7 +14,7 @@ const RequestHistory = () => {
     const getRequestHistory = async () => {
         try {
             const response = await axios.get(
-                baseUrl + `/api/employee/get-all-request?employeeID=${userObject.id}`
+                baseUrl + `/api/employee/get-all-request?employeeID=${userObject.id}&employeeName=${userObject.name}`
             );
             setRequestLogs(response?.data?.message);
         } catch (error) {

@@ -48,12 +48,15 @@ const Attendance = (props) => {
         user: {id: userID}
     } = useContext(AuthContext)
 
+    const userString = localStorage.getItem('user');
+    const userObject = userString ? JSON.parse(userString) : null;
+
     const baseUrl = process.env.REACT_APP_BASE_API_URL;
 
     const fetchScheduleEmployyee = async () => {
         try {
             const response = await axios.get(
-                baseUrl + `/api/employee/get-attendance?employeeID=${userID}`,
+                baseUrl + `/api/employee/get-attendance?employeeID=${userID}&employeeName=${userObject.name}`,
                 { withCredentials: true }
             );
             setScheduleEmployee(response.data);
@@ -64,8 +67,6 @@ const Attendance = (props) => {
     };
 
     // useEffect(() => {
-    const userString = localStorage.getItem('user');
-    const userObject = userString ? JSON.parse(userString) : null;
     //     setUserObject(userObject)
     //     console.log(userObject);
     // }, [])
@@ -213,7 +214,7 @@ const Attendance = (props) => {
         try {
             setLoading(true)
             const { data } = await axios.post(
-                baseUrl + `/api/employee/get-attendance?employeeID=${userID}`,
+                baseUrl + `/api/employee/get-attendance?employeeID=${userID}&employeeName=${userObject.name}`,
                 {
                     dates: formData.data.dates,
                     shift_code: selectedShiftAddShiftForm,
