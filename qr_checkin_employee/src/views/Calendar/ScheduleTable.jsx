@@ -50,9 +50,9 @@ const ScheduleTable = (props) => {
     
     const baseUrl = process.env.REACT_APP_BASE_API_URL;
     
+    const userString = localStorage.getItem('user');
+    const userObject = userString ? JSON.parse(userString) : null;
     const fetchScheduleEmployyee = async () => {
-        const userString = localStorage.getItem('user');
-        const userObject = userString ? JSON.parse(userString) : null;
         try {
             const response = await axios.get(
                 baseUrl + `/api/employee/get-schedules?employeeID=${userID}&employeeName=${userObject.name}`,

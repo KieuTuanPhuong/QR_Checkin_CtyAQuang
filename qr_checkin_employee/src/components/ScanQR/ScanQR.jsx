@@ -21,10 +21,10 @@ const ScanQR = () => {
 
   const baseUrl = process.env.REACT_APP_BASE_API_URL;
 
+  const userString = localStorage.getItem('user');
+  const userObject = userString ? JSON.parse(userString) : null;
+  
   const handleScan = async (data) => {
-    const userString = localStorage.getItem('user');
-    const userObject = userString ? JSON.parse(userString) : null;
-
     if (data && !isAttendanceChecked) {
       console.log(data);
       try {
